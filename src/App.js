@@ -11,7 +11,7 @@ import Login from "./components/pages/Login";
 function App() {
   return (
     <>
-      <Router>
+      <Router basename="/mehndi">
         <Navbar />
         <Routes>
           <Route path="/" exact element={<OurMission />} />
