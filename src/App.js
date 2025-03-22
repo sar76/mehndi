@@ -2,7 +2,7 @@ import React from "react";
 import Navbar from "./components/Navbar";
 import "./App.css";
 import OurMission from "./components/pages/OurMission";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import ExploreDesigns from "./components/pages/ExploreDesigns";
 import FindArtists from "./components/pages/FindArtists";
 import SignUp from "./components/pages/SignUp";
@@ -11,7 +11,7 @@ import Login from "./components/pages/Login";
 function App() {
   return (
     <>
-      <Router basename="/mehndi">
+      <Router>
         <Navbar />
         <Routes>
           <Route path="/" exact element={<OurMission />} />
