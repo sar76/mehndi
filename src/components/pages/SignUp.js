@@ -1,7 +1,9 @@
+"use client";
+
 import React from "react";
 import "../../App.css";
 import "./SignUp.css";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 export default function SignUp() {
   return (
@@ -45,7 +47,7 @@ export default function SignUp() {
 
         <div className="signup-footer">
           <p>
-            Already have an account? <Link to="/login">Log In</Link>
+            Already have an account? <Link href="/login">Log In</Link>
           </p>
         </div>
       </div>

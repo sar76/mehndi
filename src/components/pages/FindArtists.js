@@ -1,6 +1,9 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
 import "./FindArtists.css";
 import "../../App.css";
+import Link from "next/link";
 
 function FindArtists() {
   // Sample artist data (in a real app, this would come from an API)
@@ -13,16 +16,25 @@ function FindArtists() {
       priceRange: "$$",
       rating: 4.8,
       styles: ["Bridal", "Traditional", "Modern"],
-      // image: "/images/artist1.jpg", // Add your image path when available
-      // profileImage: "/images/profile1.jpg", // Add your image path when available
+      image: "https://via.placeholder.com/300x400?text=Amina+Khan",
+      profileImage: "https://via.placeholder.com/150x150?text=AK",
       description:
         "Specializing in bridal mehndi with over 10 years of experience.",
       portfolio: [
-        // "/images/portfolio1-1.jpg", // Add your image paths when available
-        // "/images/portfolio1-2.jpg",
-        // "/images/portfolio1-3.jpg",
-        // "/images/portfolio1-4.jpg",
+        "https://via.placeholder.com/400x300?text=Bridal+Design+1",
+        "https://via.placeholder.com/400x300?text=Bridal+Design+2",
+        "https://via.placeholder.com/400x300?text=Bridal+Design+3",
+        "https://via.placeholder.com/400x300?text=Bridal+Design+4",
       ],
+      contact: {
+        email: "amina@example.com",
+        phone: "(555) 123-4567",
+        instagram: "@aminakhanhenna",
+      },
+      experience: "10+ years",
+      specializations: ["Bridal", "Traditional", "Modern"],
+      availability: "Weekends and Weekdays",
+      languages: ["English", "Hindi", "Urdu"],
     },
     {
       id: 2,
@@ -31,16 +43,25 @@ function FindArtists() {
       priceRange: "$$$",
       rating: 4.9,
       styles: ["Indo-Arabic", "Contemporary", "Bridal"],
-      // image: "/images/artist2.jpg", // Add your image path when available
-      // profileImage: "/images/profile2.jpg", // Add your image path when available
+      image: "https://via.placeholder.com/300x400?text=Priya+Sharma",
+      profileImage: "https://via.placeholder.com/150x150?text=PS",
       description:
         "Award-winning henna artist with a unique fusion of modern and traditional styles.",
       portfolio: [
-        // "/images/portfolio2-1.jpg", // Add your image paths when available
-        // "/images/portfolio2-2.jpg",
-        // "/images/portfolio2-3.jpg",
-        // "/images/portfolio2-4.jpg",
+        "https://via.placeholder.com/400x300?text=Indo-Arabic+1",
+        "https://via.placeholder.com/400x300?text=Indo-Arabic+2",
+        "https://via.placeholder.com/400x300?text=Indo-Arabic+3",
+        "https://via.placeholder.com/400x300?text=Indo-Arabic+4",
       ],
+      contact: {
+        email: "priya@example.com",
+        phone: "(555) 234-5678",
+        instagram: "@priyasharmahenna",
+      },
+      experience: "8+ years",
+      specializations: ["Indo-Arabic", "Contemporary", "Bridal"],
+      availability: "Weekends and Weekdays",
+      languages: ["English", "Hindi", "Gujarati"],
     },
     {
       id: 3,
@@ -49,16 +70,25 @@ function FindArtists() {
       priceRange: "$",
       rating: 4.6,
       styles: ["Arabic", "Simple", "Kids"],
-      // image: "/images/artist3.jpg", // Add your image path when available
-      // profileImage: "/images/profile3.jpg", // Add your image path when available
+      image: "https://via.placeholder.com/300x400?text=Saima+Patel",
+      profileImage: "https://via.placeholder.com/150x150?text=SP",
       description:
         "Affordable and quick designs perfect for events and children's parties.",
       portfolio: [
-        // "/images/portfolio3-1.jpg", // Add your image paths when available
-        // "/images/portfolio3-2.jpg",
-        // "/images/portfolio3-3.jpg",
-        // "/images/portfolio3-4.jpg",
+        "https://via.placeholder.com/400x300?text=Arabic+Design+1",
+        "https://via.placeholder.com/400x300?text=Arabic+Design+2",
+        "https://via.placeholder.com/400x300?text=Arabic+Design+3",
+        "https://via.placeholder.com/400x300?text=Arabic+Design+4",
       ],
+      contact: {
+        email: "saima@example.com",
+        phone: "(555) 345-6789",
+        instagram: "@saimapatelhenna",
+      },
+      experience: "5+ years",
+      specializations: ["Arabic", "Simple", "Kids"],
+      availability: "Weekends and Weekdays",
+      languages: ["English", "Hindi", "Arabic"],
     },
   ]);
 
@@ -372,7 +402,13 @@ function FindArtists() {
               )}
 
             <div className="artist-contact">
-              <button className="contact-button">
+              <button
+                className="contact-button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  window.location.href = `/contact-artist/${selectedArtist.id}`;
+                }}
+              >
                 <i className="fas fa-envelope"></i> Contact Artist
               </button>
               <button className="booking-button">

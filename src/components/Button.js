@@ -1,6 +1,8 @@
+"use client";
+
 import React from "react";
 import "./Button.css";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 const STYLES = ["btn--primary", "btn--outline", "btn--white"];
 const SIZES = ["btn--medium", "btn--large"];
@@ -11,36 +13,32 @@ export const Button = ({
   onClick,
   buttonStyle,
   buttonSize,
-  to,
+  href,
 }) => {
   const checkButtonStyle = STYLES.includes(buttonStyle)
     ? buttonStyle
     : STYLES[0];
   const checkButtonSize = SIZES.includes(buttonSize) ? buttonSize : SIZES[0];
 
-  // If onClick is provided and there's no "to" prop, render a regular button
-  if (onClick && !to) {
+  const buttonContent = (
+    <button
+      className={`btn ${checkButtonStyle} ${checkButtonSize}`}
+      onClick={onClick}
+      type={type || "button"}
+    >
+      {children}
+    </button>
+  );
+
+  // If href is provided, wrap with Link
+  if (href) {
     return (
-      <button
-        className={`btn ${checkButtonStyle} ${checkButtonSize}`}
-        onClick={onClick}
-        type={type || "button"}
-      >
-        {children}
-      </button>
+      <Link href={href} className="btn-mobile">
+        {buttonContent}
+      </Link>
     );
   }
 
-  // Otherwise, render a Link
-  return (
-    <Link to={to || "/sign-up"} className="btn-mobile">
-      <button
-        className={`btn ${checkButtonStyle} ${checkButtonSize}`}
-        onClick={onClick}
-        type={type}
-      >
-        {children}
-      </button>
-    </Link>
-  );
+  // Otherwise, just return the button
+  return buttonContent;
 };

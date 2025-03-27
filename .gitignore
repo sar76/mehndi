@@ -1,0 +1,16 @@
+# Node.js dependencies
+node_modules/
+/.pnp
+.pnp.js
+
+# Next.js build outputs
+/.next/
+/out/
+
+# Environment variables
+.env*.local
+
+# Other common Next.js files to ignore
+.vercel
+*.tsbuildinfo
+next-env.d.ts

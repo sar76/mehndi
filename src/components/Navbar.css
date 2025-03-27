@@ -9,10 +9,10 @@
   justify-content: center;
   align-items: center;
   font-size: 1.2rem;
+  font-family: "Poppins", sans-serif;
   position: sticky;
   top: 0;
   z-index: 999;
-  font-family: "Poppins", sans-serif;
 }
 
 .navbar-container {

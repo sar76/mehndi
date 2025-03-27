@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { Button } from "./Button";
 import "./HeroSection.css";
@@ -36,8 +38,9 @@ function HeroSection() {
           className="btns"
           buttonStyle="btn--primary"
           buttonSize="btn--large"
+          href="/explore-designs"
         >
-          SEE TRAILER <i className="far fa-play-circle" />
+          EXPLORE DESIGNS <i className="far fa-play-circle" />
         </Button>
       </div>
     </div>
