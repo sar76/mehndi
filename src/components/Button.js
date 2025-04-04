@@ -33,8 +33,10 @@ export const Button = ({
   // If href is provided, wrap with Link
   if (href) {
     return (
-      <Link href={href} className="btn-mobile">
-        {buttonContent}
+      <Link href={href} passHref legacyBehavior>
+        <a className={`btn ${checkButtonStyle} ${checkButtonSize}`}>
+          {children}
+        </a>
       </Link>
     );
   }

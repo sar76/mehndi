@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "./Button";
@@ -23,9 +22,15 @@ function Navbar() {
 
   useEffect(() => {
     showButton();
-  }, []);
 
-  window.addEventListener("resize", showButton);
+    // Add event listener inside useEffect
+    window.addEventListener("resize", showButton);
+
+    // Clean up the event listener when component unmounts
+    return () => {
+      window.removeEventListener("resize", showButton);
+    };
+  }, []);
 
   const scrollToMission = (e) => {
     e.preventDefault();
@@ -43,7 +48,7 @@ function Navbar() {
     <nav className="navbar">
       <div className="navbar-container">
         <Link href="/" className="navbar-logo" onClick={closeMobileMenu}>
-          <i className="fas fa-paint-brush"></i> Mehndi
+          <i className="fas fa-paint-brush"></i> Mehndi Artists
         </Link>
         <div className="menu-icon" onClick={handleClick}>
           <i className={click ? "fas fa-times" : "fas fa-bars"} />

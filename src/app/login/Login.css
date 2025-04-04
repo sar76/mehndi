@@ -6,7 +6,7 @@ video {
   z-index: -1;
 }
 
-.signup-container {
+.login-container {
   position: relative;
   height: 100vh;
   width: 100%;
@@ -16,7 +16,7 @@ video {
   overflow: hidden;
 }
 
-.signup-background-video {
+.login-background-video {
   position: absolute;
   top: 0;
   left: 0;
@@ -26,7 +26,7 @@ video {
   z-index: -1;
 }
 
-.signup-content {
+.login-content {
   background: rgba(0, 0, 0, 0.6);
   padding: 3rem;
   border-radius: 10px;
@@ -37,19 +37,19 @@ video {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
-.signup-content h1 {
+.login-content h1 {
   color: white;
   margin-bottom: 0.5rem;
   font-size: 2.5rem;
 }
 
-.signup-subtitle {
+.login-subtitle {
   color: rgba(255, 255, 255, 0.8);
   margin-bottom: 2rem;
   font-size: 1.1rem;
 }
 
-.signup-form {
+.login-form {
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -60,8 +60,7 @@ video {
   width: 100%;
 }
 
-.form-group input,
-.form-group select {
+.form-group input {
   width: 100%;
   padding: 0.8rem;
   border: none;
@@ -75,17 +74,20 @@ video {
   color: rgba(255, 255, 255, 0.7);
 }
 
-.form-group select {
-  appearance: none;
-  cursor: pointer;
+.form-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
 }
 
-.form-group select option {
-  background: #333;
-  color: white;
+.form-checkbox input[type="checkbox"] {
+  width: auto;
 }
 
-.signup-button {
+.login-button {
   background: linear-gradient(135deg, #f16a50, #e84a5f);
   color: white;
   border: none;
@@ -97,22 +99,48 @@ video {
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.signup-button:hover {
+.login-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(232, 74, 95, 0.4);
 }
 
-.signup-footer {
+.login-footer {
   color: rgba(255, 255, 255, 0.7);
   font-size: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-.signup-footer a {
+.login-footer a {
   color: #f16a50;
   text-decoration: none;
   font-weight: bold;
 }
 
-.signup-footer a:hover {
+.login-footer a:hover {
   text-decoration: underline;
+}
+
+.forgot-password {
+  color: #f16a50;
+  text-decoration: none;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+}
+
+@media screen and (max-width: 480px) {
+  .login-form {
+    padding: 20px;
+  }
+
+  .form-options {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
 }

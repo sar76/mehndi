@@ -3,7 +3,6 @@
 import React from "react";
 import { Button } from "./Button";
 import "./HeroSection.css";
-import "../App.css";
 
 function HeroSection() {
   const scrollToCards = () => {
@@ -23,7 +22,7 @@ function HeroSection() {
   return (
     <div className="hero-container">
       <video src="/background_video.mp4" autoPlay loop muted />
-      <h1>Mehndi Pros</h1>
+      <h1>Mehndi Artists</h1>
       <p>The Hub for Finding Your Local Mehndi or Henna Artists</p>
       <div className="hero-btns">
         <Button
