@@ -745,21 +745,21 @@ export default function FindArtistsPage() {
       <div className="find-artists-container">
         <motion.div
           className="find-artists-hero"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
+          // initial={{ opacity: 0 }}
+          // animate={{ opacity: 1 }}
+          // transition={{ duration: 0.8 }}
         >
           <motion.h1
-            initial={{ y: -20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+          // initial={{ y: -20, opacity: 0 }}
+          // animate={{ y: 0, opacity: 1 }}
+          // transition={{ duration: 0.5, delay: 0.2 }}
           >
             Find Mehndi Artists
           </motion.h1>
           <motion.p
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
+          // initial={{ y: 20, opacity: 0 }}
+          // animate={{ y: 0, opacity: 1 }}
+          // transition={{ duration: 0.5, delay: 0.4 }}
           >
             Discover talented henna artists in your area for your special
             occasions
@@ -768,9 +768,9 @@ export default function FindArtistsPage() {
 
         <motion.div
           className="filters-container"
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.6 }}
+          // initial={{ y: 20, opacity: 0 }}
+          // animate={{ y: 0, opacity: 1 }}
+          // transition={{ duration: 0.5, delay: 0.6 }}
         >
           <h2>Find Your Perfect Artist</h2>
           <div className="search-box">
@@ -830,9 +830,9 @@ export default function FindArtistsPage() {
           {getActiveFilters().length > 0 && (
             <motion.div
               className="active-filters"
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
+              // initial={{ opacity: 0, height: 0 }}
+              // animate={{ opacity: 1, height: "auto" }}
+              // exit={{ opacity: 0, height: 0 }}
             >
               {getActiveFilters().map((filter, index) => (
                 <div key={index} className="active-filter">
@@ -855,9 +855,9 @@ export default function FindArtistsPage() {
 
         <motion.div
           className="artists-grid"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.8 }}
+          // initial={{ opacity: 0 }}
+          // animate={{ opacity: 1 }}
+          // transition={{ duration: 0.5, delay: 0.8 }}
         >
           <AnimatePresence>
             {filteredArtists.length > 0 ? (
@@ -866,12 +866,12 @@ export default function FindArtistsPage() {
                   key={artist.id}
                   className="artist-card"
                   onClick={() => openArtistModal(artist)}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{
-                    opacity: 1,
-                    y: 0,
-                    transition: { delay: (0.1 * index) % 5 },
-                  }}
+                  // initial={{ opacity: 0, y: 20 }}
+                  // animate={{
+                  //   opacity: 1,
+                  //   y: 0,
+                  //   transition: { delay: (0.1 * index) % 5 },
+                  // }}
                   exit={{ opacity: 0, y: 20 }}
                   whileHover={{ y: -10 }}
                 >
@@ -904,8 +904,8 @@ export default function FindArtistsPage() {
             ) : (
               <motion.div
                 className="no-results"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
+                // initial={{ opacity: 0 }}
+                // animate={{ opacity: 1 }}
                 style={{
                   gridColumn: "1 / -1",
                   textAlign: "center",
@@ -931,16 +931,16 @@ export default function FindArtistsPage() {
           {isModalOpen && selectedArtist && (
             <motion.div
               className="modal-overlay"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+              // initial={{ opacity: 0 }}
+              // animate={{ opacity: 1 }}
+              // exit={{ opacity: 0 }}
               onClick={closeArtistModal}
             >
               <motion.div
                 className="modal-content artist-modal"
-                initial={{ y: 50, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: 50, opacity: 0 }}
+                // initial={{ y: 50, opacity: 0 }}
+                // animate={{ y: 0, opacity: 1 }}
+                // exit={{ y: 50, opacity: 0 }}
                 transition={{ type: "spring", damping: 25 }}
                 onClick={(e) => e.stopPropagation()}
               >
@@ -980,12 +980,12 @@ export default function FindArtistsPage() {
                       >
                         <FiDollarSign size={16} /> Get Price Quote
                       </button>
-                      <Link
+                      {/* <Link
                         href={`/book-appointment?artist=${selectedArtist.id}`}
                         className="book-appointment-btn"
                       >
                         <FiCalendar size={16} /> Book Appointment
-                      </Link>
+                      </Link> */}
                     </div>
                   </div>
 
@@ -1063,7 +1063,7 @@ export default function FindArtistsPage() {
                       </div>
                     </div>
 
-                    <div className="contact-section">
+                    {/* <div className="contact-section">
                       <h3>Contact Information</h3>
                       <div className="contact-details">
                         <a
@@ -1090,7 +1090,7 @@ export default function FindArtistsPage() {
                           {selectedArtist.contact.instagram}
                         </a>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
 
                   <div className="portfolio-section">
@@ -1118,16 +1118,16 @@ export default function FindArtistsPage() {
           {isImageModalOpen && selectedImage && (
             <motion.div
               className="modal-overlay"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+              // initial={{ opacity: 0 }}
+              // animate={{ opacity: 1 }}
+              // exit={{ opacity: 0 }}
               onClick={closeImageModal}
             >
               <motion.div
                 className="modal-content image-modal"
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.9, opacity: 0 }}
+                // initial={{ scale: 0.9, opacity: 0 }}
+                // animate={{ scale: 1, opacity: 1 }}
+                // exit={{ scale: 0.9, opacity: 0 }}
                 transition={{ type: "spring", damping: 25 }}
                 onClick={(e) => e.stopPropagation()}
               >
@@ -1176,16 +1176,16 @@ export default function FindArtistsPage() {
           {isQuoteModalOpen && selectedArtist && (
             <motion.div
               className="modal-overlay"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+              // initial={{ opacity: 0 }}
+              // animate={{ opacity: 1 }}
+              // exit={{ opacity: 0 }}
               onClick={closeQuoteModal}
             >
               <motion.div
                 className="modal-content quote-modal"
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.9, opacity: 0 }}
+                // initial={{ scale: 0.9, opacity: 0 }}
+                // animate={{ scale: 1, opacity: 1 }}
+                // exit={{ scale: 0.9, opacity: 0 }}
                 transition={{ type: "spring", damping: 25 }}
                 onClick={(e) => e.stopPropagation()}
               >
@@ -1369,8 +1369,8 @@ export default function FindArtistsPage() {
                     {calculatedQuote && (
                       <motion.div
                         className="quote-result"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
+                        // initial={{ opacity: 0, y: 20 }}
+                        // animate={{ opacity: 1, y: 0 }}
                       >
                         <h3>Your Custom Quote</h3>
 
@@ -1416,7 +1416,7 @@ export default function FindArtistsPage() {
 
                         <div className="quote-contact">
                           <Link
-                            href={`/contact?artist=${
+                            href={`/book-appointment?artist=${
                               selectedArtist.id
                             }&quote=${calculatedQuote.total.toFixed(2)}`}
                             className="contact-about-quote-btn"

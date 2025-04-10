@@ -21,7 +21,7 @@ function HeroSection() {
 
   return (
     <div className="hero-container">
-      <video src="/background_video.mp4" autoPlay loop muted />
+      <img src="/homepage.webp" classname="bg-image" />
       <h1>Mehndi Artists</h1>
       <p>The Hub for Finding Your Local Mehndi or Henna Artists</p>
       <div className="hero-btns">
