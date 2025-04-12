@@ -3,11 +3,13 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "./Button";
 import "./Navbar.css";
+import { onAuthStateChanged, signOut as firebaseSignOut } from "firebase/auth";
+import { auth } from "../lib/firebase"; // Adjust the path if necessary
 
 function Navbar() {
   const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
-  const [loginActive, setLoginActive] = useState(false);
+  const [user, setUser] = useState(null);
 
   const handleClick = () => setClick(!click);
   const closeMobileMenu = () => setClick(false);
@@ -22,15 +24,26 @@ function Navbar() {
 
   useEffect(() => {
     showButton();
-
-    // Add event listener inside useEffect
     window.addEventListener("resize", showButton);
-
-    // Clean up the event listener when component unmounts
     return () => {
       window.removeEventListener("resize", showButton);
     };
   }, []);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const handleSignOut = async () => {
+    try {
+      await firebaseSignOut(auth);
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
 
   const scrollToMission = (e) => {
     e.preventDefault();
@@ -80,14 +93,30 @@ function Navbar() {
         </ul>
         <div className="button-container">
           {button && (
-            <Button buttonStyle="btn--outline" href="/sign-up">
-              SIGN UP
-            </Button>
-          )}
-          {button && (
-            <Button buttonStyle="btn--white" href="/login">
-              LOGIN
-            </Button>
+            <>
+              {user ? (
+                <>
+                  <Button
+                    buttonStyle="btn--profile"
+                    href="`/profile/${user.uid}`"
+                  >
+                    PROFILE
+                  </Button>
+                  <Button buttonStyle="btn--white" onClick={handleSignOut}>
+                    SIGN OUT
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button buttonStyle="btn--outline" href="/sign-up">
+                    SIGN UP
+                  </Button>
+                  <Button buttonStyle="btn--white" href="/login">
+                    LOGIN
+                  </Button>
+                </>
+              )}
+            </>
           )}
         </div>
       </div>
