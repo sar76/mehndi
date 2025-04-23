@@ -1,0 +1,302 @@
+/* app/profile/profile.css */
+
+main {
+  background: #ffffff;
+  margin: 2rem auto;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  width: 90%;
+  max-width: 700px;
+}
+
+main h1 {
+  font-size: 1.75rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  color: #333333;
+}
+
+main h2 {
+  font-size: 1.4rem;
+  margin-top: 2rem;
+  margin-bottom: 1.5rem;
+  color: #444444;
+  text-align: center;
+  border-bottom: 1px solid #eaeaea;
+  padding-bottom: 0.5rem;
+}
+
+main h3 {
+  font-size: 1.1rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  color: #555555;
+  text-align: center;
+}
+
+main h4 {
+  font-size: 1rem;
+  margin: 0 0 0.5rem 0;
+  color: #333333;
+}
+
+.profile-container {
+  background: #ffffff;
+}
+
+.form-section {
+  margin-bottom: 3rem;
+  padding-bottom: 1rem;
+}
+
+.helper-text {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-field {
+  margin-bottom: 1.5rem;
+}
+
+.form-field label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: #555555;
+  text-align: center;
+}
+
+.form-field input, 
+.form-field textarea, 
+.form-field select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  display: block;
+  margin: 0 auto;
+  max-width: 500px;
+}
+
+.form-field input:focus, 
+.form-field textarea:focus, 
+.form-field select:focus {
+  border-color: #0070f3;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0,112,243,0.15);
+}
+
+.multi-select {
+  height: 120px;
+}
+
+.select-with-button {
+  display: flex;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.select-with-button select {
+  flex-grow: 1;
+}
+
+.selected-items {
+  margin-top: 1rem;
+}
+
+.tag-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  justify-content: center;
+}
+
+.tag {
+  background-color: #f0f2f5;
+  padding: 0.4rem 0.6rem;
+  border-radius: 16px;
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.tag-remove {
+  background: none;
+  border: none;
+  color: #999;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 0 0 0 0.3rem;
+  margin: 0;
+}
+
+.tag-remove:hover {
+  color: #ff4d4f;
+}
+
+/* Service item styles */
+.service-item {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  border: 1px solid #eaeaea;
+  border-radius: 4px;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-bottom: 0.5rem;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: auto;
+  margin-right: 0.5rem;
+}
+
+.price-input {
+  margin-top: 0.5rem;
+  margin-left: 1.5rem;
+}
+
+.price-input input {
+  max-width: calc(100% - 1.5rem);
+}
+
+/* Portfolio styles */
+.add-portfolio {
+  padding: 1.5rem;
+  border: 1px dashed #d9d9d9;
+  border-radius: 4px;
+  max-width: 500px;
+  margin: 0 auto 2rem;
+}
+
+.portfolio-list {
+  margin-top: 2rem;
+}
+
+.portfolio-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid #eaeaea;
+  border-radius: 4px;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.portfolio-item-details {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.portfolio-image {
+  margin-bottom: 0.75rem;
+  text-align: center;
+}
+
+.portfolio-image img {
+  max-width: 100%;
+  max-height: 150px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.portfolio-text {
+  flex: 1;
+}
+
+.date-added {
+  font-size: 0.8rem;
+  color: #888;
+  margin-top: 0.5rem;
+}
+
+.add-btn {
+  background-color: #0070f3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin: 1rem auto 0;
+  display: block;
+}
+
+.add-btn:hover {
+  background-color: #0062d3;
+}
+
+.remove-btn {
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-left: 0.75rem;
+  white-space: nowrap;
+}
+
+.remove-btn:hover {
+  background-color: #ff7875;
+}
+
+.save-btn {
+  background-color: #0070f3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin: 1.5rem auto;
+  display: block;
+  max-width: 200px;
+}
+
+.save-btn:hover {
+  background-color: #0062d3;
+}
+
+/* Logout button style */
+.logout-btn {
+  display: block;
+  margin: 1.5rem auto 0;
+  padding: 0.5rem 1rem;
+  background: transparent;
+  border: 1px solid #0070f3;
+  color: #0070f3;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.logout-btn:hover {
+  background-color: rgba(0,112,243,0.1);
+}

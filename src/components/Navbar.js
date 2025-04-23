@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "./Button";
@@ -22,6 +23,7 @@ function Navbar() {
     }
   };
 
+  // Show/hide signup/login buttons on resize
   useEffect(() => {
     showButton();
     window.addEventListener("resize", showButton);
@@ -30,6 +32,7 @@ function Navbar() {
     };
   }, []);
 
+  // Listen for auth state
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
@@ -51,7 +54,6 @@ function Navbar() {
     if (missionSection) {
       missionSection.scrollIntoView({ behavior: "smooth" });
     } else {
-      // If we're not on the home page, navigate to home page with mission section
       window.location.href = "/#mission";
     }
     closeMobileMenu();
@@ -96,10 +98,8 @@ function Navbar() {
             <>
               {user ? (
                 <>
-                  <Button
-                    buttonStyle="btn--profile"
-                    href="`/profile/${user.uid}`"
-                  >
+                  {/* PROFILE now links to /profile, where we pull currentUser.uid internally */}
+                  <Button buttonStyle="btn--profile" href="/profile">
                     PROFILE
                   </Button>
                   <Button buttonStyle="btn--white" onClick={handleSignOut}>

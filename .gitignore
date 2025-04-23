@@ -13,4 +13,4 @@ node_modules/
 # Other common Next.js files to ignore
 .vercel
 *.tsbuildinfo
-next-env.d.ts
+next-env.d.tsfirebase.js

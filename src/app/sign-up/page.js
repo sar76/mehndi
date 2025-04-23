@@ -1,96 +1,97 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./SignUp.css";
 import Link from "next/link";
 import Navbar from "../../components/Navbar";
 import { auth, db } from "../../lib/firebase";
-import {
-  GoogleAuthProvider,
-  signInWithPopup,
-  createUserWithEmailAndPassword,
-} from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
-import { useRouter } from "next/navigation"; // Using the app router
+import { useRouter } from "next/navigation";
 
 export default function SignUp() {
   const router = useRouter();
-  const [user, setUser] = useState(null);
   const [formValues, setFormValues] = useState({
     fullName: "",
     email: "",
     password: "",
     role: "",
   });
+  const [error, setError] = useState("");
 
-  // Debug: Log when the component mounts
-  console.log("SignUp component loaded");
-
-  // Listen for authentication changes and redirect if a user is signed in.
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
-      if (currentUser) {
-        setUser(currentUser);
-        console.log("User signed in (in useEffect):", currentUser.uid);
-        router.push("/explore-designs");
-      } else {
-        setUser(null);
-      }
-    });
-    return () => unsubscribe();
-  }, [router]);
-
-  // Handle input changes for the form.
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    console.log(`Input changed: ${name} = ${value}`);
-    setFormValues((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+    setFormValues((p) => ({ ...p, [name]: value }));
   };
 
-  // Handle email sign up and create a Firestore document.
-  const handleEmailSignUp = async (e) => {
+  const isFormValid =
+    formValues.fullName.trim() !== "" &&
+    formValues.email.trim()    !== "" &&
+    formValues.password.trim() !== "" &&
+    formValues.role           !== "";
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Create Account pressed. Form values:", formValues);
+    setError("");
+    if (!isFormValid) {
+      setError("Please fill in all fields.");
+      return;
+    }
 
     try {
-      // Create user with email and password.
-      const userCredential = await createUserWithEmailAndPassword(
+      // 1) Create Auth user
+      const cred = await createUserWithEmailAndPassword(
         auth,
         formValues.email,
         formValues.password
       );
-      const createdUser = userCredential.user;
-      console.log("User created with uid:", createdUser.uid);
+      const uid = cred.user.uid;
 
-      // Write user data to Firestore in the "users" collection.
-      await setDoc(doc(db, "users", createdUser.uid), {
-        fullName: formValues.fullName,
-        email: formValues.email,
-        role: formValues.role,
-        createdAt: serverTimestamp(),
-      });
-      console.log("User document created in Firestore.");
-      // The onAuthStateChanged listener will handle the redirection.
-    } catch (error) {
-      console.error("Error signing up with email:", error);
-    }
-  };
-
-  // Handle Google sign up.
-  const handleGoogleSignUp = async () => {
-    const provider = new GoogleAuthProvider();
-    try {
-      const userCredential = await signInWithPopup(auth, provider);
-      console.log(
-        "Google sign in successful. User uid:",
-        userCredential.user.uid
+      // 2) Write to /users collection as before
+      await setDoc(
+        doc(db, "users", uid),
+        {
+          fullName: formValues.fullName,
+          email:    formValues.email,
+          role:     formValues.role,
+          createdAt: serverTimestamp(),
+        },
+        { merge: true }
       );
-      // Optionally: Check if a Firestore document exists and create one if needed.
-    } catch (error) {
-      console.error("Google sign up error:", error);
+
+      // 3) If this is an artist, bootstrap an empty artists/{uid} doc
+      if (formValues.role === "artist") {
+        // split fullName into fname/lname
+        const parts = formValues.fullName.trim().split(" ");
+        const fname = parts.shift();
+        const lname = parts.join(" ");
+
+        await setDoc(
+          doc(db, "artists", uid),
+          {
+            fname,                // e.g. "Amina"
+            lname,                // e.g. "Khan"
+            email:    formValues.email,
+            phone:    "",         // left blank
+            city:     "",         // left blank
+            country:  "",         // left blank
+            imageURL: "",         // left blank
+            languages: [],        // empty array
+            availability: "",     // left blank
+            bio:      "",         // left blank
+            rating:   0,          // default
+            reviews:  0,          // default
+            styles:   []          // empty array
+          },
+          { merge: true }
+        );
+      }
+
+      // 4) Finally redirect
+      router.push("/explore-designs");
+    } catch (err) {
+      console.error("Sign‑up error:", err);
+      setError(err.message || "Failed to create account.");
     }
   };
 
@@ -111,7 +112,9 @@ export default function SignUp() {
             Connect with Talented Henna Artists in your area
           </p>
 
-          <form className="signup-form" onSubmit={handleEmailSignUp}>
+          <form className="signup-form" onSubmit={handleSubmit}>
+            {error && <p className="error-message">{error}</p>}
+
             <div className="form-group">
               <input
                 type="text"
@@ -122,6 +125,7 @@ export default function SignUp() {
                 onChange={handleInputChange}
               />
             </div>
+
             <div className="form-group">
               <input
                 type="email"
@@ -132,6 +136,7 @@ export default function SignUp() {
                 onChange={handleInputChange}
               />
             </div>
+
             <div className="form-group">
               <input
                 type="password"
@@ -142,6 +147,7 @@ export default function SignUp() {
                 onChange={handleInputChange}
               />
             </div>
+
             <div className="form-group">
               <select
                 name="role"
@@ -150,24 +156,21 @@ export default function SignUp() {
                 required
               >
                 <option value="" disabled>
-                  I am a...
+                  I am a…
                 </option>
                 <option value="artist">Henna Artist</option>
                 <option value="client">Looking for an Artist</option>
               </select>
             </div>
+
             <button
               type="submit"
               className="signup-button"
-              onClick={() => console.log("Submit button clicked")}
+              disabled={!isFormValid}
             >
               Create Account
             </button>
           </form>
-
-          <button onClick={handleGoogleSignUp} className="signup-google-button">
-            Sign Up with Google
-          </button>
 
           <div className="signup-footer">
             <p>
