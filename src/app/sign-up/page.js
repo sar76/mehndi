@@ -69,22 +69,33 @@ export default function SignUp() {
         await setDoc(
           doc(db, "artists", uid),
           {
-            fname,                // e.g. "Amina"
-            lname,                // e.g. "Khan"
-            email:    formValues.email,
-            phone:    "",         // left blank
-            city:     "",         // left blank
-            country:  "",         // left blank
-            imageURL: "",         // left blank
-            languages: [],        // empty array
-            availability: "",     // left blank
-            bio:      "",         // left blank
-            rating:   0,          // default
-            reviews:  0,          // default
-            styles:   []          // empty array
+            fname,
+            lname,
+            email: formValues.email,
+            phone: "",
+            city: "",
+            country: "",
+            imageURL: "",
+            languages: [],
+            availability: "",
+            bio: "",
+            rating: 0,
+            reviews: 0,
+            styles: [],
+            party_per_person: 0,
+            AE_price_min: 0,
+            BH_price_min: 0,
+            BP_price_min: 0,
+            FD_price_min: 0,
+            SH_price_min: 0,
+            ST_price_min: 0,
+            portfolio: [],
+            serviceOffered: [],
+            yearsexperience: 0,
+            isPublished: false,
           },
           { merge: true }
-        );
+        );        
       }
 
       // 4) Finally redirect

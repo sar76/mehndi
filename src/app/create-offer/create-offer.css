@@ -1,0 +1,92 @@
+.create-offer-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .appointment-summary {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  
+  .offer-services {
+    margin-bottom: 30px;
+  }
+  
+  .service-item {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 100px 80px 80px;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .service-item select,
+  .service-item input {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .service-item button {
+    padding: 8px;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .offer-services button {
+    padding: 10px 15px;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .offer-total {
+    font-size: 18px;
+    margin: 20px 0;
+    background-color: #f0f0f0;
+    padding: 15px;
+    border-radius: 4px;
+    text-align: right;
+  }
+  
+  .offer-notes {
+    margin: 20px 0;
+  }
+  
+  .offer-notes textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    resize: vertical;
+  }
+  
+  .offer-actions {
+    margin-top: 30px;
+  }
+  
+  .send-offer-button {
+    padding: 12px 20px;
+    background-color: #d81b60;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+  }
+  
+  .send-offer-button:disabled {
+    background-color: #f5f5f5;
+    color: #999;
+    cursor: not-allowed;
+  }

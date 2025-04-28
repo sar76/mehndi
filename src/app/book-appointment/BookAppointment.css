@@ -93,6 +93,14 @@
   background-color: #f9f7f4;
   border: 2px solid rgba(0, 0, 0, 0.08);
   transition: border-color 0.3s, box-shadow 0.3s;
+  color: #333; /* Add text color to inputs */
+}
+
+.form-group input::placeholder,
+.form-group select::placeholder,
+.form-group textarea::placeholder,
+.date-picker-input::placeholder {
+  color: #777; /* Add placeholder text color */
 }
 
 .form-group input:focus,

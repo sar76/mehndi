@@ -24,7 +24,7 @@ import Navbar from "../../components/Navbar";
 import "./FindArtists.css";
 import "../globals.css";
 import { db } from "../../lib/firebase"; // Import your Firebase config
-import { collection, getDocs, doc, getDoc } from "firebase/firestore";
+import { collection, getDocs, query, where, doc, getDoc, onSnapshot } from "firebase/firestore";
 
 export default function FindArtistsPage() {
   // State for artists
@@ -52,173 +52,6 @@ export default function FindArtistsPage() {
   const [artists, setArtists] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch artists from Firestore based on filter criteria
-  useEffect(() => {
-    const fetchArtists = async () => {
-      try {
-        setLoading(true);
-
-        // Get reference to the artists collection
-        const artistsCollectionRef = collection(db, "artists");
-
-        // Convert the query snapshot to an array of artist data
-        const querySnapshot = await getDocs(artistsCollectionRef);
-
-        // Create an array to hold the formatted artist data
-        const artistsData = [];
-
-        // Process each document
-        querySnapshot.forEach((doc) => {
-          const artistData = doc.data();
-
-          // Format services data - in real app, you'd store this in Firestore too
-          // This is just a placeholder for the demo
-          const servicesData = {
-            singleHand: {
-              name: "Single Hand Design",
-              description: "Intricate design covering palm and fingers",
-              basePrice: 80,
-              complexityMultipliers: {
-                simple: 0.6, // $48
-                medium: 1, // $80
-                complex: 1.5, // $120
-              },
-              icon: <FiHeart size={24} />,
-            },
-            bothHands: {
-              name: "Both Hands Design",
-              description: "Matching designs for both hands",
-              basePrice: 150,
-              complexityMultipliers: {
-                simple: 0.7, // $105
-                medium: 1, // $150
-                complex: 1.8, // $270
-              },
-              icon: <FiHeart size={24} />,
-            },
-            feet: {
-              name: "Feet Design",
-              description: "Designs for the top of feet",
-              basePrice: 120,
-              complexityMultipliers: {
-                simple: 0.7, // $84
-                medium: 1, // $120
-                complex: 1.5, // $180
-              },
-              icon: <FiHeart size={24} />,
-            },
-            armExtension: {
-              name: "Arm Extension",
-              description: "Design extending up to elbow or shoulder",
-              basePrice: 100,
-              complexityMultipliers: {
-                simple: 0.6, // $60
-                medium: 1, // $100
-                complex: 1.7, // $170
-              },
-              icon: <FiClock size={24} />,
-            },
-            bridialPackage: {
-              name: "Bridal Package",
-              description: "Full bridal set with hands, feet, and arms",
-              basePrice: 650,
-              icon: <FiAward size={24} />,
-            },
-            partyPackage: {
-              name: "Party/Event Package",
-              description: "Group discount for 5+ people (per person)",
-              basePrice: 70,
-              icon: <FiUsers size={24} />,
-              minQuantity: 5,
-            },
-            specialty: {
-              name: "Specialty Techniques",
-              description: "Includes shading, gems, glitter, or white henna",
-              basePrice: 50,
-              options: [
-                { name: "Shading", price: 50 },
-                { name: "White Henna", price: 30 },
-                { name: "Gems/Glitter", price: 40 },
-                { name: "Custom Elements", price: 60 },
-              ],
-              icon: <FiPackage size={24} />,
-            },
-          };
-
-          const raw = artistData.portfolio || [
-            /* same 4 placeholders you had before */
-          ];
-
-          const portfolioItems = [];
-          for (let i = 0; i < raw.length; i += 4) {
-            portfolioItems.push({
-              image: raw[i],
-              title: raw[i + 1],
-              description: raw[i + 2],
-              date: raw[i + 3],
-            });
-          }
-
-          // Create the artist object with the structure needed for the component
-          const formattedArtist = {
-            id: doc.id,
-            name: `${artistData.fname} ${artistData.lname}`,
-            location: `${artistData.city}, ${artistData.country}`,
-            rating: artistData.rating,
-            styles: artistData.styles,
-            image: artistData.imageURL,
-            description: artistData.bio,
-            portfolio: portfolioItems,
-            experience: artistData.yearsexperience,
-            styles: artistData.styles,
-            availability: artistData.availability,
-            languages: artistData.languages,
-            services: {
-              singleHandDesign: {
-                enabled: artistData.serviceOffered.includes("Single Hand Design"),
-                minPrice: artistData.SH_price_min
-              },
-              bothHandsDesign: {
-                enabled: artistData.serviceOffered.includes("Both Hands Design"),
-                minPrice: artistData.BH_price_min
-              },
-              feetDesign: {
-                enabled: artistData.serviceOffered.includes("Feet Design"),
-                minPrice: artistData.FD_price_min
-              },
-              armExtension: {
-                enabled: artistData.serviceOffered.includes("Arm Extension"),
-                minPrice: artistData.AE_price_min
-              },
-              bridalPackage: {
-                enabled: artistData.serviceOffered.includes("Bridal Package"),
-                minPrice: artistData.BP_price_min
-              },
-              partyEventPackage: {
-                enabled: artistData.serviceOffered.includes("Party/Event Package"),
-                minPrice: artistData.party_per_person
-              },
-              specialtyTechniques: {
-                enabled: artistData.serviceOffered.includes("Specialty Techniques"),
-                minPrice: artistData.ST_price_min
-              }
-            }
-          };
-
-          artistsData.push(formattedArtist);
-        });
-
-        setArtists(artistsData);
-      } catch (error) {
-        console.error("Error fetching artists data:", error);
-        setArtists([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchArtists();
-  }, []);
 
   // Filter states
   const [location, setLocation] = useState("");
@@ -289,211 +122,133 @@ export default function FindArtistsPage() {
   ];
 
   // Function to fetch artists with filters applied
-  const fetchFilteredArtists = async () => {
-    try {
-      setLoading(true);
-
-      // Get reference to the artists collection
-      const artistsCollectionRef = collection(db, "artists");
-
-      // Create a query with filters
-      let artistsQuery = artistsCollectionRef;
-
-      // In a real application, you would apply Firestore filters here
-      // For example:
-      // if (location) {
-      //   const [city, country] = location.split(", ");
-      //   artistsQuery = query(artistsQuery, where("city", "==", city));
-      // }
-
-      // if (style) {
-      //   artistsQuery = query(artistsQuery, where("styles", "array-contains", style));
-      // }
-
-      // Note: Price range filtering might need to be done client-side
-      // unless you have a specific field for it
-
-      // Execute the query
-      const querySnapshot = await getDocs(artistsQuery);
-
-      // Process results
-      const artistsData = [];
-
-      querySnapshot.forEach((doc) => {
-        const artistData = doc.data();
-
-        // Skip if doesn't match our filters (this would be done in the query in a real app)
-        if (location && `${artistData.city}, ${artistData.country}` !== location) return;
-
-        // Services data preparation (would be in Firestore in a real app)
-        const servicesData = {
-          singleHand: {
-            name: "Single Hand Design",
-            description: "Intricate design covering palm and fingers",
-            basePrice: 80,
-            complexityMultipliers: {
-              simple: 0.6,
-              medium: 1,
-              complex: 1.5,
-            },
-            icon: <FiHeart size={24} />,
+  // Replace both fetch functions with this consolidated version
+const fetchArtists = async (filters = {}) => {
+  try {
+    setLoading(true);
+    
+    // Get reference to the artists collection
+    const artistsCollectionRef = collection(db, "artists");
+    
+    // Always filter for published artists
+    let artistsQuery = query(
+      artistsCollectionRef,
+      where("isPublished", "==", true)
+    );
+    
+    // Execute the query to get all published artists
+    const querySnapshot = await getDocs(artistsQuery);
+    
+    // Process each document
+    const artistsData = [];
+    querySnapshot.forEach((doc) => {
+      const artistData = doc.data();
+      
+      // Create portfolio items array
+      const raw = artistData.portfolio || [];
+      const portfolioItems = [];
+      for (let i = 0; i < raw.length; i += 4) {
+        portfolioItems.push({
+          image: raw[i],
+          title: raw[i + 1],
+          description: raw[i + 2],
+          date: raw[i + 3],
+        });
+      }
+      
+      // Format the artist data
+      const formattedArtist = {
+        id: doc.id,
+        name: `${artistData.fname} ${artistData.lname}`,
+        location: `${artistData.city}, ${artistData.country}`,
+        rating: artistData.rating,
+        styles: artistData.styles,
+        image: artistData.imageURL,
+        profileImage: artistData.profileImage,
+        description: artistData.bio,
+        portfolio: portfolioItems,
+        experience: artistData.yearsexperience,
+        availability: artistData.availability,
+        languages: artistData.languages,
+        services: {
+          singleHandDesign: {
+            enabled: artistData.serviceOffered.includes("singleHandDesign"),
+            minPrice: artistData.SH_price_min
           },
-          bothHands: {
-            name: "Both Hands Design",
-            description: "Matching designs for both hands",
-            basePrice: 150,
-            complexityMultipliers: {
-              simple: 0.7,
-              medium: 1,
-              complex: 1.8,
-            },
-            icon: <FiHeart size={24} />,
+          bothHandsDesign: {
+            enabled: artistData.serviceOffered.includes("bothHandsDesign"),
+            minPrice: artistData.BH_price_min
           },
-          feet: {
-            name: "Feet Design",
-            description: "Designs for the top of feet",
-            basePrice: 120,
-            complexityMultipliers: {
-              simple: 0.7,
-              medium: 1,
-              complex: 1.5,
-            },
-            icon: <FiHeart size={24} />,
+          feetDesign: {
+            enabled: artistData.serviceOffered.includes("feetDesign"),
+            minPrice: artistData.FD_price_min
           },
           armExtension: {
-            name: "Arm Extension",
-            description: "Design extending up to elbow or shoulder",
-            basePrice: 100,
-            complexityMultipliers: {
-              simple: 0.6,
-              medium: 1,
-              complex: 1.7,
-            },
-            icon: <FiClock size={24} />,
+            enabled: artistData.serviceOffered.includes("armExtension"),
+            minPrice: artistData.AE_price_min
           },
-          bridialPackage: {
-            name: "Bridal Package",
-            description: "Full bridal set with hands, feet, and arms",
-            basePrice: 650,
-            icon: <FiAward size={24} />,
+          bridalPackage: {
+            enabled: artistData.serviceOffered.includes("bridalPackage"),
+            minPrice: artistData.BP_price_min
           },
-          partyPackage: {
-            name: "Party/Event Package",
-            description: "Group discount for 5+ people (per person)",
-            basePrice: 70,
-            icon: <FiUsers size={24} />,
-            minQuantity: 5,
+          partyEventPackage: {
+            enabled: artistData.serviceOffered.includes("partyEventPackage"),
+            minPrice: artistData.party_per_person
           },
-          specialty: {
-            name: "Specialty Techniques",
-            description: "Includes shading, gems, glitter, or white henna",
-            basePrice: 50,
-            options: [
-              { name: "Shading", price: 50 },
-              { name: "White Henna", price: 30 },
-              { name: "Gems/Glitter", price: 40 },
-              { name: "Custom Elements", price: 60 },
-            ],
-            icon: <FiPackage size={24} />,
-          },
-        };
-
-        // right after you pull `artistData` out of doc.data():
-        const raw = artistData.portfolio || [
-          /* same 4 placeholders you had before */
-        ];
-
-        const portfolioItems = [];
-        for (let i = 0; i < raw.length; i += 4) {
-          portfolioItems.push({
-            image: raw[i],
-            title: raw[i + 1],
-            description: raw[i + 2],
-            date: raw[i + 3],
-          });
-        }
-        // Create the formatted artist object
-        const formattedArtist = {
-          id: doc.id,
-          name: `${artistData.fname} ${artistData.lname}`,
-          location: `${artistData.city}, ${artistData.country}`,
-          rating: artistData.rating,
-          styles: artistData.styles,
-          image: artistData.imageURL,
-          profileImage: artistData.profileImage,
-          description: artistData.bio,
-          portfolio: portfolioItems,
-          experience: artistData.yearsexperience,
-          styles: artistData.styles,
-          availability: artistData.availability,
-          languages: artistData.languages,
-          services: {
-            singleHandDesign: {
-              enabled: artistData.serviceOffered.includes("singleHandDesign"),
-              minPrice: artistData.SH_price_min
-            },
-            bothHandsDesign: {
-              enabled: artistData.serviceOffered.includes("bothHandsDesign"),
-              minPrice: artistData.BH_price_min
-            },
-            feetDesign: {
-              enabled: artistData.serviceOffered.includes("feetDesign"),
-              minPrice: artistData.FD_price_min
-            },
-            armExtension: {
-              enabled: artistData.serviceOffered.includes("armExtension"),
-              minPrice: artistData.AE_price_min
-            },
-            bridalPackage: {
-              enabled: artistData.serviceOffered.includes("bridalPackage"),
-              minPrice: artistData.BP_price_min
-            },
-            partyEventPackage: {
-              enabled: artistData.serviceOffered.includes("partyEventPackage"),
-              minPrice: artistData.party_per_person
-            },
-            specialtyTechniques: {
-              enabled: artistData.serviceOffered.includes("specialtyTechniques"),
-              minPrice: artistData.ST_price_min
-            }
-          }
-        };
-
-        // Skip if it doesn't match the style filter (would be in the query in a real app)
-        if (style && !formattedArtist.styles.includes(style)) return;
-
-
-        // Skip if it doesn't match the search term
-        if (searchTerm) {
-          const term = searchTerm.toLowerCase();
-          if (!(
-            formattedArtist.name.toLowerCase().includes(term) ||
-            formattedArtist.location.toLowerCase().includes(term) ||
-            formattedArtist.description.toLowerCase().includes(term) ||
-            formattedArtist.styles.some((s) => s.toLowerCase().includes(term))
-          )) {
-            return;
+          specialtyTechniques: {
+            enabled: artistData.serviceOffered.includes("specialtyTechniques"),
+            minPrice: artistData.ST_price_min
           }
         }
-
-        artistsData.push(formattedArtist);
-      });
-
-      setArtists(artistsData);
-      setFilteredArtists(artistsData);
-    } catch (error) {
-      console.error("Error fetching filtered artists:", error);
-      setArtists([]);
-      setFilteredArtists([]);
-    } finally {
-      setLoading(false);
+      };
+      
+      artistsData.push(formattedArtist);
+    });
+    
+    // Apply client-side filtering
+    let filtered = [...artistsData];
+    
+    // Filter by location if specified
+    if (filters.location) {
+      filtered = filtered.filter(artist => artist.location === filters.location);
     }
-  };
+    
+    // Filter by style if specified
+    if (filters.style) {
+      filtered = filtered.filter(artist => artist.styles.includes(filters.style));
+    }
+    
+    // Filter by search term if specified
+    if (filters.searchTerm) {
+      const term = filters.searchTerm.toLowerCase();
+      filtered = filtered.filter(artist => (
+        artist.name.toLowerCase().includes(term) ||
+        artist.location.toLowerCase().includes(term) ||
+        artist.description.toLowerCase().includes(term) ||
+        artist.styles.some(s => s.toLowerCase().includes(term))
+      ));
+    }
+    
+    // Update state with both the complete dataset and the filtered results
+    setArtists(artistsData);
+    setFilteredArtists(filtered);
+  } catch (error) {
+    console.error("Error fetching artists data:", error);
+    setArtists([]);
+    setFilteredArtists([]);
+  } finally {
+    setLoading(false);
+  }
+};
 
-  // Apply filters when they change
-  useEffect(() => {
-    fetchFilteredArtists();
-  }, [location, style, searchTerm]);
+  // Fetch artists on initial load and when filters change
+useEffect(() => {
+  fetchArtists({
+    location,
+    style,
+    searchTerm
+  });
+}, [location, style, searchTerm]);
 
   // Get active filters
   const getActiveFilters = () => {
@@ -1188,13 +943,12 @@ export default function FindArtistsPage() {
                       </div>
 
                       <div className="quote-contact">
-                        <Link
-                          href={`/book-appointment?artist=${selectedArtist.id
-                            }&quote=${calculatedQuote.total.toFixed(2)}`}
-                          className="contact-about-quote-btn"
-                        >
-                          <FiSend size={16} /> Contact About This Quote
-                        </Link>
+                      <Link
+  href={`/book-appointment?artistId=${selectedArtist.id}&quote=${calculatedQuote.total.toFixed(2)}`}
+  className="contact-about-quote-btn"
+>
+  <FiSend size={16} /> Contact About This Quote
+</Link>
                       </div>
                     </div>
                   )}
